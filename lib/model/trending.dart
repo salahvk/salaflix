@@ -86,7 +86,7 @@ class Results {
     popularity = json['popularity'];
     releaseDate = json['release_date'];
     video = json['video'];
-    voteAverage = json['vote_average'];
+    // voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
     name = json['name'];
     originalName = json['original_name'];

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:salafix/API/get_trending.dart';
+import 'package:salafix/API/get_home_page.dart';
 import 'package:salafix/components/routes_manager.dart';
 
 class Splash extends StatefulWidget {
@@ -15,10 +15,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    getTrending(context);
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushNamed(context, Routes.homePage);
-    });
+    gotoNextPage();
   }
 
   @override
@@ -35,5 +32,14 @@ class _SplashState extends State<Splash> {
         ),
       ),
     );
+  }
+
+  gotoNextPage() async {
+    getTrending(context);
+    getPopular(context);
+    getUpcoming(context);
+    Timer(Duration(seconds: 3), () {
+      Navigator.pushReplacementNamed(context, Routes.homePage);
+    });
   }
 }
