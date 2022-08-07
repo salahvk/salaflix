@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:salafix/components/routes_manager.dart';
 import 'package:salafix/components/theme_manager.dart';
-import 'package:salafix/screens/home_page.dart';
+import 'package:salafix/provider/data_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,11 +14,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Salafix',
-      debugShowCheckedModeBanner: false,
-      theme: getApplicationTheme(context).copyWith(useMaterial3: true),
-      home: const HomePage(),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => DataProvider())],
+      child: MaterialApp(
+        title: 'Salaflix',
+        debugShowCheckedModeBanner: false,
+        theme: getApplicationTheme(context).copyWith(useMaterial3: true),
+        initialRoute: Routes.splashRoute,
+        onGenerateRoute: RouteGenerator.getRoute,
+      ),
     );
   }
 }
