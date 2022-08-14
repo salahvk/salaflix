@@ -28,4 +28,22 @@ class DataProvider with ChangeNotifier {
     _upcoming = value;
     notifyListeners();
   }
+
+// * Search
+  Trending? _search;
+  Trending? get search => _search;
+
+  set searchData(Trending value) {
+    _search = value;
+    notifyListeners();
+  }
+
+  void clean() {
+    if (_search != null) {
+      _search = null;
+      print("null");
+    }
+
+    notifyListeners();
+  }
 }

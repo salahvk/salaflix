@@ -15,6 +15,16 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   @override
+  void initState() {
+    final provider = Provider.of<DataProvider>(context, listen: false);
+    // TODO: implement initState
+    super.initState();
+    // if (provider.search != null) {
+    //   provider.clean();
+    // }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final provider = Provider.of<DataProvider>(context, listen: false);
     final size = MediaQuery.of(context).size;
@@ -43,40 +53,9 @@ class _HomeState extends State<Home> {
                 )
               ],
             ),
-            // * Trending movie list start
-            Expanded(
-                child: ListView.builder(
-              itemBuilder: (ctx, index) {
-                String? images = provider.trend!.results![index].posterPath;
-                final newImages = "$posterApi$images";
-                return InkWell(
-                  onTap: () {
-                    // getTrending();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 80,
-                      width: 120,
-                      decoration: BoxDecoration(
-                          color: ColorManager.grayLight,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: ColorManager.grayLight)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          newImages,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-              itemCount: 15,
-              scrollDirection: Axis.horizontal,
-            )),
-            // * Trending movie list end
+            // * Trending movie list
+            TrendingMovieList(provider: provider),
+
             Row(
               children: [
                 Padding(
@@ -89,40 +68,9 @@ class _HomeState extends State<Home> {
                 )
               ],
             ),
-            // * Popular movie list start
-            Expanded(
-                child: ListView.builder(
-              itemBuilder: (ctx, index) {
-                String? images = provider.popular!.results![index].posterPath;
-                final newImages = "$posterApi$images";
-                return InkWell(
-                  onTap: () {
-                    // getTrending();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 80,
-                      width: 120,
-                      decoration: BoxDecoration(
-                          color: ColorManager.grayLight,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: ColorManager.grayLight)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          newImages,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-              itemCount: 15,
-              scrollDirection: Axis.horizontal,
-            )),
-            // * Popular movie list end
+            // * Popular movie list
+            PopularMovieList(provider: provider),
+
             Row(
               children: [
                 Padding(
@@ -135,43 +83,150 @@ class _HomeState extends State<Home> {
                 )
               ],
             ),
-            // * Upcoming movie list start
-            Expanded(
-                child: ListView.builder(
-              itemBuilder: (ctx, index) {
-                String? images = provider.upcoming!.results![index].posterPath;
-                final newImages = "$posterApi$images";
-                return InkWell(
-                  onTap: () {
-                    // getTrending();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 80,
-                      width: 120,
-                      decoration: BoxDecoration(
-                          color: ColorManager.grayLight,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: ColorManager.grayLight)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          newImages,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-              itemCount: 15,
-              scrollDirection: Axis.horizontal,
-            )),
-            // * Upcoming movie list end
+            // * Upcoming movie list
+            UpcomingMovieList(provider: provider),
           ],
         ),
       )),
     );
+  }
+}
+
+class UpcomingMovieList extends StatelessWidget {
+  const UpcomingMovieList({
+    Key? key,
+    required this.provider,
+  }) : super(key: key);
+
+  final DataProvider provider;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+        flex: 2,
+        child: ListView.builder(
+          itemBuilder: (ctx, index) {
+            String? images = provider.upcoming?.results![index].posterPath;
+            final newImages = "$posterApi$images";
+            return InkWell(
+              onTap: () {
+                // getTrending();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 80,
+                  width: 120,
+                  decoration: BoxDecoration(
+                      color: ColorManager.grayLight,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: ColorManager.grayLight)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      newImages,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+          itemCount: 15,
+          scrollDirection: Axis.horizontal,
+        ));
+  }
+}
+
+class PopularMovieList extends StatelessWidget {
+  const PopularMovieList({
+    Key? key,
+    required this.provider,
+  }) : super(key: key);
+
+  final DataProvider provider;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+        flex: 2,
+        child: ListView.builder(
+          itemBuilder: (ctx, index) {
+            String? images = provider.popular?.results![index].posterPath;
+            final newImages = "$posterApi$images";
+            return InkWell(
+              onTap: () {
+                // getTrending();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 80,
+                  width: 120,
+                  decoration: BoxDecoration(
+                      color: ColorManager.grayLight,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: ColorManager.grayLight)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      newImages,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+          itemCount: 15,
+          scrollDirection: Axis.horizontal,
+        ));
+  }
+}
+
+class TrendingMovieList extends StatelessWidget {
+  const TrendingMovieList({
+    Key? key,
+    required this.provider,
+  }) : super(key: key);
+
+  final DataProvider provider;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Flexible(
+        flex: 3,
+        child: ListView.builder(
+          itemBuilder: (ctx, index) {
+            String? images = provider.trend?.results![index].posterPath;
+            final newImages = "$posterApi$images";
+            return InkWell(
+              onTap: () {
+                // getTrending();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 60,
+                  width: size.width * 0.45,
+                  decoration: BoxDecoration(
+                      color: ColorManager.grayLight,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: ColorManager.grayLight)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      newImages,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+          itemCount: 15,
+          scrollDirection: Axis.horizontal,
+        ));
   }
 }
