@@ -5,6 +5,7 @@ import 'package:salafix/screens/splash_screen.dart';
 class Routes {
   static const String splashRoute = '/';
   static const String homePage = '/hompage';
+  // static const String searchedMovie = '/searchedMovie';
 }
 
 class RouteGenerator {
@@ -14,6 +15,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const Splash());
       case Routes.homePage:
         return MaterialPageRoute(builder: (_) => const HomePage());
+      // case Routes.searchedMovie:
+      //   return MaterialPageRoute(builder: (_) => const SearchedMovie());
       default:
         return unDefinedRoute();
     }

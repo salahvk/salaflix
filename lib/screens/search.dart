@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:salafix/API/end_point.dart';
 import 'package:salafix/model/trending.dart';
 import 'package:salafix/provider/data_provider.dart';
+import 'package:salafix/screens/searchedMovie.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _SearchState extends State<Search> {
   TextEditingController searchController = TextEditingController();
   Timer? _debounce;
   int? len;
+  final FocusNode focusActive = FocusNode();
 
   _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
@@ -40,10 +42,9 @@ class _SearchState extends State<Search> {
 
   @override
   void initState() {
-    final provider = Provider.of<DataProvider>(context, listen: false);
-    // TODO: implement initState
     super.initState();
     len = 0;
+    focusActive.requestFocus();
   }
 
   @override
@@ -59,8 +60,15 @@ class _SearchState extends State<Search> {
       body: SafeArea(
           child: Column(
         children: [
-          Container(
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Container(
+              height: 50,
               child: TextField(
+                  focusNode: focusActive,
+                  decoration: InputDecoration(
+                    hintText: "Search for Movies",
+                  ),
                   controller: searchController,
                   onChanged: (value) {
                     if (value.length == 0) {
@@ -74,7 +82,9 @@ class _SearchState extends State<Search> {
                     }
 
                     _onSearchChanged(value);
-                  })),
+                  }),
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) {
@@ -82,13 +92,12 @@ class _SearchState extends State<Search> {
                     Provider.of<DataProvider>(context, listen: true);
                 final image = provider.search?.results?[index].posterPath;
                 final title = provider.search?.results![index].title;
+                Results result = provider.search!.results![index];
                 final newImages = "$posterApi$image";
-                return ListTile(
-                  leading: Container(
-                    height: 20,
-                    child: image != null ? Image.network(newImages) : Text(''),
-                  ),
-                  title: Text(title ?? ""),
+                return SearchResult(
+                  image: image,
+                  newImages: newImages,
+                  result: result,
                 );
               },
               itemCount: len,
@@ -96,6 +105,43 @@ class _SearchState extends State<Search> {
           )
         ],
       )),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class SearchResult extends StatelessWidget {
+  SearchResult({
+    Key? key,
+    required this.image,
+    required this.newImages,
+    required this.result,
+  }) : super(key: key);
+
+  final String? image;
+  final String newImages;
+  Results result;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        print(result.title);
+        print(result.overview);
+
+        Navigator.push(context, MaterialPageRoute(builder: (ctx) {
+          return SearchedMovie(
+            result: result,
+          );
+        }));
+      },
+      child: ListTile(
+        leading: Container(
+          height: 40,
+          child: image != null ? Image.network(newImages) : Text(''),
+        ),
+        title: Text(result.title ?? ""),
+      ),
     );
   }
 }

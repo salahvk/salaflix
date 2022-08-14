@@ -62,8 +62,8 @@ ThemeData getApplicationTheme(BuildContext context) {
         // contentPadding: EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
         filled: true,
         fillColor: ColorManager.darkBackground,
-        hintStyle:
-            getSemiBoldtStyle(color: ColorManager.tertiary.withOpacity(.5)),
+        hintStyle: getSemiBoldtStyle(
+            color: ColorManager.tertiary.withOpacity(.5), fontSize: 16),
         labelStyle:
             getSemiBoldtStyle(color: ColorManager.tertiary.withOpacity(.5)),
         floatingLabelStyle:
@@ -74,8 +74,19 @@ ThemeData getApplicationTheme(BuildContext context) {
         //   left: 10,
         //   right: 10,
         // ),
-        border: InputBorder.none,
 
+        border: InputBorder.none,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide:
+              const BorderSide(color: ColorManager.whiteColor, width: .5),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(
+            color: ColorManager.whiteColor,
+          ),
+        ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(
