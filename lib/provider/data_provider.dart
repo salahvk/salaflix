@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:salafix/model/credits.dart';
 import 'package:salafix/model/trending.dart';
 
 class DataProvider with ChangeNotifier {
@@ -44,6 +45,15 @@ class DataProvider with ChangeNotifier {
       print("null");
     }
 
+    notifyListeners();
+  }
+
+  // * Cast
+  Credits? _credit;
+  Credits? get credit => _credit;
+
+  set creditData(Credits value) {
+    _credit = value;
     notifyListeners();
   }
 }

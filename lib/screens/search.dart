@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salafix/API/end_point.dart';
+import 'package:salafix/model/credits.dart';
 import 'package:salafix/model/trending.dart';
 import 'package:salafix/provider/data_provider.dart';
 import 'package:salafix/screens/searchedMovie.dart';
@@ -110,7 +111,7 @@ class _SearchState extends State<Search> {
 }
 
 // ignore: must_be_immutable
-class SearchResult extends StatelessWidget {
+class SearchResult extends StatefulWidget {
   SearchResult({
     Key? key,
     required this.image,
@@ -123,24 +124,42 @@ class SearchResult extends StatelessWidget {
   Results result;
 
   @override
+  State<SearchResult> createState() => _SearchResultState();
+}
+
+class _SearchResultState extends State<SearchResult> {
+  getCredits(BuildContext context, String id) async {
+    final provider = Provider.of<DataProvider>(context, listen: false);
+    var response =
+        await http.get(Uri.parse("$endPoint/movie/$id/credits$apiKey"));
+    var jsonResponse = jsonDecode(response.body);
+    var allCredits = Credits.fromJson(jsonResponse);
+    provider.creditData = allCredits;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        print(result.title);
-        print(result.overview);
+      onTap: () async {
+        print(widget.result.title ?? widget.result.name);
+        print(widget.result.overview);
+        print(widget.result.id);
+        await getCredits(context, widget.result.id.toString());
+        print("Wait finished");
 
         Navigator.push(context, MaterialPageRoute(builder: (ctx) {
           return SearchedMovie(
-            result: result,
+            result: widget.result,
           );
         }));
       },
       child: ListTile(
         leading: Container(
           height: 40,
-          child: image != null ? Image.network(newImages) : Text(''),
+          child:
+              widget.image != null ? Image.network(widget.newImages) : Text(''),
         ),
-        title: Text(result.title ?? ""),
+        title: Text(widget.result.title ?? widget.result.name!),
       ),
     );
   }

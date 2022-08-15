@@ -44,7 +44,7 @@ class Results {
   double? popularity;
   String? releaseDate;
   bool? video;
-  double? voteAverage;
+  var voteAverage;
   int? voteCount;
   String? name;
   String? originalName;
@@ -82,11 +82,11 @@ class Results {
     overview = json['overview'];
     posterPath = json['poster_path'];
     mediaType = json['media_type'];
-    genreIds = json['genre_ids'].cast<int>();
+    // genreIds = json['genre_ids'].cast<int>();
     popularity = json['popularity'];
     releaseDate = json['release_date'];
     video = json['video'];
-    // voteAverage = json['vote_average'];
+    voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
     name = json['name'];
     originalName = json['original_name'];

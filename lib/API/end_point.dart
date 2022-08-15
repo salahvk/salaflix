@@ -4,4 +4,7 @@ const String posterApi = "https://image.tmdb.org/t/p/w500";
 const String trendingApi = "$endPoint/trending/all/day$apiKey";
 const String popularApi = "$endPoint/movie/popular$apiKey";
 const String upcomingApi = "$endPoint/movie/upcoming$apiKey";
-const String searchApi = "$endPoint/search/movie$apiKey&query=";
+const String searchApi = "$endPoint/search/multi$apiKey&query=";
+// const String credits = "$endPoint/movie/$id/credits$apiKey";
+const String noImageAvailable =
+    "https://www.york.ac.uk/media/biology/images/staffimages/NoImageAvailableFemale.jpg";

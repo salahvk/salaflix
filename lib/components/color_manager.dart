@@ -13,4 +13,5 @@ class ColorManager {
   static const whiteColor = Color.fromARGB(255, 255, 255, 255);
   static const disabledColor = Color(0xff78906B);
   static const blue = Color(0xff00A3FF);
+  static const blueLight = Color.fromARGB(255, 61, 220, 212);
 }
