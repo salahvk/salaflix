@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:salafix/model/credits.dart';
+import 'package:salafix/model/getVideo.dart';
 import 'package:salafix/model/trending.dart';
 
 class DataProvider with ChangeNotifier {
@@ -54,6 +55,15 @@ class DataProvider with ChangeNotifier {
 
   set creditData(Credits value) {
     _credit = value;
+    notifyListeners();
+  }
+
+  // * Trailer Videos
+  Getvideo? _video;
+  Getvideo? get video => _video;
+
+  set videoData(Getvideo value) {
+    _video = value;
     notifyListeners();
   }
 }

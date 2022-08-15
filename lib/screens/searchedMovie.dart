@@ -5,6 +5,7 @@ import 'package:salafix/components/color_manager.dart';
 import 'package:salafix/components/styles_manager.dart';
 import 'package:salafix/model/trending.dart';
 import 'package:salafix/provider/data_provider.dart';
+import 'package:salafix/screens/videoDetails.dart';
 
 class SearchedMovie extends StatefulWidget {
   Results result;
@@ -82,20 +83,27 @@ class _SearchedMovieState extends State<SearchedMovie> {
                 Positioned(
                   bottom: 125,
                   right: 10,
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.play_arrow,
-                          color: ColorManager.whiteColor,
-                          size: 30,
-                        ),
-                        Text(
-                          ' Play Trailer',
-                          style: getSemiBoldtStyle(
-                              color: ColorManager.whiteText, fontSize: 14),
-                        ),
-                      ],
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (ctx) {
+                        return VideoDetails();
+                      }));
+                    },
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.play_arrow,
+                            color: ColorManager.whiteColor,
+                            size: 30,
+                          ),
+                          Text(
+                            ' Play Trailer',
+                            style: getSemiBoldtStyle(
+                                color: ColorManager.whiteText, fontSize: 14),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 )

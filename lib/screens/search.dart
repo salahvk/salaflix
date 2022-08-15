@@ -4,7 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salafix/API/end_point.dart';
-import 'package:salafix/model/credits.dart';
+import 'package:salafix/API/get_credits.dart';
+import 'package:salafix/API/get_video.dart';
+
 import 'package:salafix/model/trending.dart';
 import 'package:salafix/provider/data_provider.dart';
 import 'package:salafix/screens/searchedMovie.dart';
@@ -128,15 +130,6 @@ class SearchResult extends StatefulWidget {
 }
 
 class _SearchResultState extends State<SearchResult> {
-  getCredits(BuildContext context, String id) async {
-    final provider = Provider.of<DataProvider>(context, listen: false);
-    var response =
-        await http.get(Uri.parse("$endPoint/movie/$id/credits$apiKey"));
-    var jsonResponse = jsonDecode(response.body);
-    var allCredits = Credits.fromJson(jsonResponse);
-    provider.creditData = allCredits;
-  }
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -145,6 +138,7 @@ class _SearchResultState extends State<SearchResult> {
         print(widget.result.overview);
         print(widget.result.id);
         await getCredits(context, widget.result.id.toString());
+        await getVideo(context, widget.result.id.toString());
         print("Wait finished");
 
         Navigator.push(context, MaterialPageRoute(builder: (ctx) {
