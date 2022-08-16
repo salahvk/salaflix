@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:salafix/API/get_home_page.dart';
 import 'package:salafix/components/routes_manager.dart';
@@ -35,11 +33,11 @@ class _SplashState extends State<Splash> {
   }
 
   gotoNextPage() async {
-    getTrending(context);
-    getPopular(context);
-    getUpcoming(context);
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, Routes.homePage);
-    });
+    await getTrending(context);
+    await getPopular(context);
+    await getUpcoming(context);
+    // Timer(Duration(seconds: 3), () {
+    Navigator.pushReplacementNamed(context, Routes.homePage);
+    // });
   }
 }

@@ -4,6 +4,13 @@ import 'package:salafix/model/getVideo.dart';
 import 'package:salafix/model/trending.dart';
 
 class DataProvider with ChangeNotifier {
+  int? homeIndex;
+
+  homeindexData(int value) {
+    homeIndex = value;
+    notifyListeners();
+  }
+
   // * Trending
   Trending? _trend;
   Trending? get trend => _trend;
