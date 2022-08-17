@@ -17,7 +17,7 @@ class _VideoDetailsState extends State<VideoDetails> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<DataProvider>(context, listen: false);
-    final confirmThumbnail = provider.video!.results!.length;
+    final confirmThumbnail = provider.video?.results!.length;
     print(confirmThumbnail);
     return Scaffold(
       body: confirmThumbnail == 0
@@ -45,18 +45,37 @@ class _VideoDetailsState extends State<VideoDetails> {
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: Container(
-                        height: 240,
-                        width: 600,
-                        decoration: BoxDecoration(),
-                        child: Image.network(
-                          'https://img.youtube.com/vi/$thumbnail/maxresdefault.jpg',
-                          errorBuilder: (context, exception, stackTrace) {
-                            return Image.network(
-                                "https://img.youtube.com/vi/$thumbnail/hqdefault.jpg");
-                          },
-                          fit: BoxFit.fitWidth,
-                        ),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            height: 240,
+                            width: 600,
+                            decoration: BoxDecoration(),
+                            child: Image.network(
+                              'https://img.youtube.com/vi/$thumbnail/maxresdefault.jpg',
+                              errorBuilder: (context, exception, stackTrace) {
+                                return Image.network(
+                                    "https://img.youtube.com/vi/$thumbnail/hqdefault.jpg");
+                              },
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                          Center(
+                            child: Icon(
+                              Icons.play_arrow,
+                              color: ColorManager.whiteColor,
+                              size: 40,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 15.0,
+                                  color: ColorManager.background,
+                                  offset: Offset(5.0, 5.0),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),

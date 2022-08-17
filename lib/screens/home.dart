@@ -9,7 +9,12 @@ import 'package:salafix/components/color_manager.dart';
 import 'package:salafix/components/styles_manager.dart';
 import 'package:salafix/provider/data_provider.dart';
 import 'package:salafix/screens/videoDetails.dart';
+import 'package:salafix/utils/percentage_indicator.dart';
+import 'package:salafix/widgets/popularMovieList.dart';
+import 'package:salafix/widgets/trendingMovieList.dart';
+import 'package:salafix/widgets/upcomingMovieList.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -22,14 +27,34 @@ class _HomeState extends State<Home> {
   static final customCacheManager =
       CacheManager(Config("customCacheKey", stalePeriod: Duration(days: 10)));
 
+  final Uri _url = Uri.parse('https://www.linkedin.com/company/livemint/');
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   if (io.Platform.isAndroid) {
+  //     WebView.platform = AndroidWebView();
+  //   }
+  //   ;
+  // }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<DataProvider>(context, listen: true);
     final size = MediaQuery.of(context).size;
     String? images =
         provider.trend?.results![provider.homeIndex ?? 0].posterPath;
-    int? id = provider.trend?.results![provider.homeIndex ?? 0].id;
+    // int? id = provider.trend?.results![provider.homeIndex ?? 0].id;
+    final result = provider.trend?.results![provider.homeIndex ?? 0];
     final newImages = "$posterApi780$images";
+
+    Future<void> _launchUrl() async {
+      if (!await launchUrl(
+        _url,
+      )) {
+        throw 'Could not launch $_url';
+      }
+    }
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -38,9 +63,15 @@ class _HomeState extends State<Home> {
         child: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent.withOpacity(.1),
-          title: Image.asset(
-            ImageAssets.appBarlogo,
-            height: 180,
+          title: InkWell(
+            // onTap: () {
+            //   print("object");
+            //   _launchUrl();
+            // },
+            child: Image.asset(
+              ImageAssets.appBarlogo,
+              height: 180,
+            ),
           ),
           centerTitle: true,
         ),
@@ -64,7 +95,10 @@ class _HomeState extends State<Home> {
                   right: 10,
                   child: InkWell(
                     onTap: () async {
-                      await getVideo(context, id.toString());
+                      print(result!.mediaType);
+                      result.mediaType == "movie"
+                          ? await getVideo(context, result.id.toString())
+                          : await getTvVideo(context, result.id.toString());
                       Navigator.push(context, MaterialPageRoute(builder: (ctx) {
                         return VideoDetails();
                       }));
@@ -129,7 +163,12 @@ class _HomeState extends State<Home> {
                         ),
                         TrendingMovieList(provider: provider),
                       ],
-                    ))
+                    )),
+                Positioned(
+                  left: 10,
+                  top: size.height * .1,
+                  child: PercentIndicator(percentage: result?.voteAverage),
+                ),
               ],
             ),
 
@@ -169,163 +208,5 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
-  }
-}
-
-class UpcomingMovieList extends StatelessWidget {
-  const UpcomingMovieList({
-    Key? key,
-    required this.provider,
-  }) : super(key: key);
-
-  final DataProvider provider;
-  static final customCacheManager =
-      CacheManager(Config("customCacheKey", stalePeriod: Duration(days: 10)));
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 200,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemBuilder: (ctx, index) {
-            String? images = provider.upcoming?.results![index].posterPath;
-            final newImages = "$posterApi$images";
-            return InkWell(
-              onTap: () {
-                // getTrending();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 80,
-                  width: 120,
-                  decoration: BoxDecoration(
-                      color: ColorManager.grayLight,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: ColorManager.grayLight)),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
-                      imageUrl: newImages,
-                      fit: BoxFit.cover,
-                      cacheManager: customCacheManager,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-          itemCount: 15,
-          scrollDirection: Axis.horizontal,
-        ));
-  }
-}
-
-class PopularMovieList extends StatelessWidget {
-  const PopularMovieList({
-    Key? key,
-    required this.provider,
-  }) : super(key: key);
-
-  final DataProvider provider;
-  static final customCacheManager =
-      CacheManager(Config("customCacheKey", stalePeriod: Duration(days: 10)));
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 200,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemBuilder: (ctx, index) {
-            String? images = provider.popular?.results![index].posterPath;
-            final newImages = "$posterApi$images";
-            return InkWell(
-              onTap: () {
-                // getTrending();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 80,
-                  width: 120,
-                  decoration: BoxDecoration(
-                      color: ColorManager.grayLight,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: ColorManager.grayLight)),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
-                      imageUrl: newImages,
-                      fit: BoxFit.cover,
-                      cacheManager: customCacheManager,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-          itemCount: 15,
-          scrollDirection: Axis.horizontal,
-        ));
-  }
-}
-
-class TrendingMovieList extends StatefulWidget {
-  const TrendingMovieList({
-    Key? key,
-    required this.provider,
-  }) : super(key: key);
-
-  final DataProvider provider;
-
-  @override
-  State<TrendingMovieList> createState() => _TrendingMovieListState();
-}
-
-class _TrendingMovieListState extends State<TrendingMovieList> {
-  static final customCacheManager =
-      CacheManager(Config("customCacheKey", stalePeriod: Duration(days: 10)));
-  @override
-  Widget build(BuildContext context) {
-    final provider = Provider.of<DataProvider>(context, listen: false);
-    final size = MediaQuery.of(context).size;
-    return Container(
-        height: 180,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemBuilder: (ctx, index) {
-            String? images = widget.provider.trend?.results![index].posterPath;
-            final newImages = "$posterApi$images";
-            return InkWell(
-              onTap: () {
-                // getTrending();
-
-                provider.homeindexData(index);
-                print(provider.homeIndex);
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 60,
-                  width: size.width * 0.25,
-                  decoration: BoxDecoration(
-                      color: ColorManager.grayLight,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: ColorManager.grayLight)),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
-                      imageUrl: newImages,
-                      fit: BoxFit.fill,
-                      cacheManager: customCacheManager,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-          itemCount: 15,
-          scrollDirection: Axis.horizontal,
-        ));
   }
 }

@@ -14,3 +14,11 @@ getVideo(BuildContext context, String id) async {
   var allVideos = Getvideo.fromJson(jsonResponse);
   provider.videoData = allVideos;
 }
+
+getTvVideo(BuildContext context, String id) async {
+  final provider = Provider.of<DataProvider>(context, listen: false);
+  var response = await http.get(Uri.parse("$endPoint/tv/$id/videos$apiKey"));
+  var jsonResponse = jsonDecode(response.body);
+  var allVideos = Getvideo.fromJson(jsonResponse);
+  provider.videoData = allVideos;
+}

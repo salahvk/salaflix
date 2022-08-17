@@ -137,8 +137,13 @@ class _SearchResultState extends State<SearchResult> {
         print(widget.result.title ?? widget.result.name);
         print(widget.result.overview);
         print(widget.result.id);
-        await getCredits(context, widget.result.id.toString());
-        await getVideo(context, widget.result.id.toString());
+        widget.result.mediaType == "movie"
+            ? await getCredits(context, widget.result.id.toString())
+            : await getTvCredits(context, widget.result.id.toString());
+        widget.result.mediaType == "movie"
+            ? await getVideo(context, widget.result.id.toString())
+            : await getTvVideo(context, widget.result.id.toString());
+        ;
         print("Wait finished");
 
         Navigator.push(context, MaterialPageRoute(builder: (ctx) {

@@ -15,3 +15,11 @@ getCredits(BuildContext context, String id) async {
   var allCredits = Credits.fromJson(jsonResponse);
   provider.creditData = allCredits;
 }
+
+getTvCredits(BuildContext context, String id) async {
+  final provider = Provider.of<DataProvider>(context, listen: false);
+  var response = await http.get(Uri.parse("$endPoint/tv/$id/credits$apiKey"));
+  var jsonResponse = jsonDecode(response.body);
+  var allCredits = Credits.fromJson(jsonResponse);
+  provider.creditData = allCredits;
+}

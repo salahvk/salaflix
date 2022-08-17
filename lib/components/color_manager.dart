@@ -14,4 +14,7 @@ class ColorManager {
   static const disabledColor = Color(0xff78906B);
   static const blue = Color(0xff00A3FF);
   static const blueLight = Color.fromARGB(255, 61, 220, 212);
+  static const lightGreen = Color(0xff20c976);
+  static const darkGreen = Color(0xff091c23);
+  static const indicatorBorGreen = Color(0xff204428);
 }

@@ -42,7 +42,9 @@ class _SearchedMovieState extends State<SearchedMovie> {
           style: getBoldtStyle(color: ColorManager.whiteColor, fontSize: 18),
         ),
         TextSpan(
-          text: " (${widget.result.releaseDate?.substring(0, 4)})",
+          text: widget.result.releaseDate != null
+              ? " (${widget.result.releaseDate?.substring(0, 4)})"
+              : " (${widget.result.firstAirDate?.substring(0, 4)})",
           style: getRegularStyle(color: ColorManager.grayLight, fontSize: 16),
         )
       ]))),

@@ -44,26 +44,35 @@ class _TrailerDisplayPageState extends State<TrailerDisplayPage> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            height: 300,
-            child: YoutubePlayer(
-              controller: _controller,
-              showVideoProgressIndicator: true,
-              // videoProgressIndicatorColor: Colors.amber,
-              progressColors: ProgressBarColors(
-                playedColor: Colors.amber,
-                handleColor: Colors.amberAccent,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              height: 300,
+              child: YoutubePlayer(
+                controller: _controller,
+                showVideoProgressIndicator: true,
+                // videoProgressIndicatorColor: Colors.amber,
+                progressColors: ProgressBarColors(
+                  playedColor: Colors.amber,
+                  handleColor: Colors.amberAccent,
+                ),
+                onReady: () {
+                  _isPlayerReady = true;
+                },
               ),
-              onReady: () {
-                _isPlayerReady = true;
-              },
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
