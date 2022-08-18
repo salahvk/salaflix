@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:salafix/API/end_point.dart';
+import 'package:salafix/API/get_credits.dart';
 import 'package:salafix/API/get_video.dart';
+import 'package:salafix/API/getmovieDetails.dart';
 import 'package:salafix/components/assets_manager.dart';
 import 'package:salafix/components/color_manager.dart';
 import 'package:salafix/components/styles_manager.dart';
 import 'package:salafix/provider/data_provider.dart';
-import 'package:salafix/screens/videoDetails.dart';
+import 'package:salafix/screens/searchedMovie.dart';
 import 'package:salafix/utils/percentage_indicator.dart';
 import 'package:salafix/widgets/popularMovieList.dart';
 import 'package:salafix/widgets/trendingMovieList.dart';
@@ -91,7 +93,8 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Positioned(
-                  bottom: size.height * .4,
+                  // bottom: size.height * .4,
+                  top: size.height * .115,
                   right: 10,
                   child: InkWell(
                     onTap: () async {
@@ -99,23 +102,31 @@ class _HomeState extends State<Home> {
                       result.mediaType == "movie"
                           ? await getVideo(context, result.id.toString())
                           : await getTvVideo(context, result.id.toString());
+                      result.mediaType == "movie"
+                          ? await getCredits(context, result.id.toString())
+                          : await getTvCredits(context, result.id.toString());
+                      result.mediaType == "movie"
+                          ? await getMovieDetails(context, result.id.toString())
+                          : await getTvDetails(context, result.id.toString());
                       Navigator.push(context, MaterialPageRoute(builder: (ctx) {
-                        return VideoDetails();
+                        return SearchedMovie(
+                          result: result,
+                        );
                       }));
                     },
                     child: Container(
                       child: Row(
                         children: [
-                          Icon(
-                            Icons.play_arrow,
-                            color: ColorManager.errorRed,
-                            size: 30,
-                          ),
+                          // Icon(
+                          //   Icons.play_arrow,
+                          //   color: ColorManager.errorRed,
+                          //   size: 30,
+                          // ),
                           Shimmer.fromColors(
-                            baseColor: Colors.red,
+                            baseColor: ColorManager.indicatorBorGreen,
                             highlightColor: Colors.yellow,
                             child: Text(
-                              ' Play Trailer',
+                              'Show More',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeightManager.bold,
@@ -178,10 +189,10 @@ class _HomeState extends State<Home> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(8, 20, 0, 20),
                   child: Text(
-                    'Popular',
-                    style: getRegularStyle(
+                    'Popular Movies',
+                    style: getSemiBoldtStyle(
                         color: ColorManager.whiteText, fontSize: 20),
                   ),
                 )
@@ -193,10 +204,10 @@ class _HomeState extends State<Home> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(8, 20, 0, 20),
                   child: Text(
-                    'Upcoming',
-                    style: getRegularStyle(
+                    'Upcoming Movies',
+                    style: getSemiBoldtStyle(
                         color: ColorManager.whiteText, fontSize: 20),
                   ),
                 )
@@ -204,6 +215,42 @@ class _HomeState extends State<Home> {
             ),
             // * Upcoming movie list
             UpcomingMovieList(provider: provider),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 20, 0, 20),
+                  child: Text(
+                    'Popular Tv Shows',
+                    style: getSemiBoldtStyle(
+                        color: ColorManager.whiteText, fontSize: 20),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 20, 0, 20),
+                  child: Text(
+                    'Upcoming Tv Shows',
+                    style: getSemiBoldtStyle(
+                        color: ColorManager.whiteText, fontSize: 20),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 20, 0, 20),
+                  child: Text(
+                    'Upcoming Movies',
+                    style: getSemiBoldtStyle(
+                        color: ColorManager.whiteText, fontSize: 20),
+                  ),
+                )
+              ],
+            ),
           ],
         ),
       ),

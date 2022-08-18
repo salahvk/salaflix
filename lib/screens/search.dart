@@ -143,7 +143,7 @@ class _SearchResultState extends State<SearchResult> {
         widget.result.mediaType == "movie"
             ? await getVideo(context, widget.result.id.toString())
             : await getTvVideo(context, widget.result.id.toString());
-        ;
+        //  await getMovieDetails(context, widget.result.id.toString());
         print("Wait finished");
 
         Navigator.push(context, MaterialPageRoute(builder: (ctx) {

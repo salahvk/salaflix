@@ -5,7 +5,9 @@ import 'package:salafix/components/color_manager.dart';
 import 'package:salafix/components/styles_manager.dart';
 import 'package:salafix/model/trending.dart';
 import 'package:salafix/provider/data_provider.dart';
+import 'package:salafix/provider/movie_details_provider.dart';
 import 'package:salafix/screens/videoDetails.dart';
+import 'package:salafix/utils/percentage_indicator.dart';
 
 class SearchedMovie extends StatefulWidget {
   Results result;
@@ -29,10 +31,14 @@ class _SearchedMovieState extends State<SearchedMovie> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<DataProvider>(context, listen: false);
+    final mProvider = Provider.of<MovieProvider>(context, listen: false);
     final backImage = widget.result.backdropPath;
     final posterImage = widget.result.posterPath;
     final size = MediaQuery.of(context).size;
-    final provider = Provider.of<DataProvider>(context, listen: false);
+    final genreLength = mProvider.movieDetails?.genres?.length;
+    // print(widget.result.voteAverage);
+
     return Scaffold(
       appBar: AppBar(
           title: RichText(
@@ -108,7 +114,42 @@ class _SearchedMovieState extends State<SearchedMovie> {
                       ),
                     ),
                   ),
-                )
+                ),
+                Positioned(
+                    left: size.width * .35,
+                    bottom: 115,
+                    child: widget.result.voteAverage != 0
+                        ? PercentIndicator(
+                            percentage: widget.result.voteAverage)
+                        : Container()),
+                Positioned(
+                    left: size.width * .35,
+                    top: 10,
+                    child: genreLength != 0 && genreLength != null
+                        ? Row(
+                            children: [
+                              Text(
+                                "${mProvider.movieDetails?.genres?[0].name}",
+                                style: getRegularStyle(
+                                    color: ColorManager.whiteText),
+                              ),
+                              genreLength >= 2
+                                  ? Text(
+                                      ", ${mProvider.movieDetails?.genres?[1].name}",
+                                      style: getRegularStyle(
+                                          color: ColorManager.whiteText),
+                                    )
+                                  : Text(''),
+                              genreLength >= 3
+                                  ? Text(
+                                      ", ${mProvider.movieDetails?.genres?[2].name}",
+                                      style: getRegularStyle(
+                                          color: ColorManager.whiteText),
+                                    )
+                                  : Text(''),
+                            ],
+                          )
+                        : Container())
               ],
             ),
             Padding(

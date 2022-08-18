@@ -12,7 +12,7 @@ class PercentIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double multipliedPercentage = percentage * 10;
+    final multipliedPercentage = percentage * 10;
     return CircularPercentIndicator(
       radius: 30.0,
       lineWidth: 6.0,
