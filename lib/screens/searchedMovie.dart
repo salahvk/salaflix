@@ -11,8 +11,8 @@ import 'package:salafix/provider/data_provider.dart';
 import 'package:salafix/provider/movie_details_provider.dart';
 import 'package:salafix/screens/videoDetails.dart';
 import 'package:salafix/utils/percentage_indicator.dart';
+import 'package:salafix/utils/shimmer_top_cast.dart';
 import 'package:salafix/widgets/topCast.dart';
-import 'package:shimmer/shimmer.dart';
 
 class SearchedMovie extends StatefulWidget {
   final Results result;
@@ -194,31 +194,7 @@ class _SearchedMovieState extends State<SearchedMovie> {
             ),
             provider.credit != null
                 ? TopCast(provider: provider)
-                : Container(
-                    height: 280,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 6,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 14, 8, 0),
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.grey[600]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              width: size.width * 0.3,
-                              decoration: BoxDecoration(
-                                  color: ColorManager.whiteColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: ColorManager.grayLight)),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  )
+                : ShimmerTopCast(size: size)
           ],
         ),
       ),

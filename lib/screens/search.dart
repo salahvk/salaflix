@@ -94,7 +94,7 @@ class _SearchState extends State<Search> {
                 final provider =
                     Provider.of<DataProvider>(context, listen: true);
                 final image = provider.search?.results?[index].posterPath;
-                final title = provider.search?.results![index].title;
+
                 Results result = provider.search!.results![index];
                 final newImages = "$posterApi$image";
                 return SearchResult(
