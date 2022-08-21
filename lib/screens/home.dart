@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:salafix/API/end_point.dart';
-import 'package:salafix/API/get_credits.dart';
-import 'package:salafix/API/get_video.dart';
-import 'package:salafix/API/getmovieDetails.dart';
 import 'package:salafix/components/assets_manager.dart';
 import 'package:salafix/components/color_manager.dart';
 import 'package:salafix/components/styles_manager.dart';
@@ -30,15 +27,6 @@ class _HomeState extends State<Home> {
       CacheManager(Config("customCacheKey", stalePeriod: Duration(days: 10)));
 
   final Uri _url = Uri.parse('https://www.linkedin.com/company/livemint/');
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   if (io.Platform.isAndroid) {
-  //     WebView.platform = AndroidWebView();
-  //   }
-  //   ;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -98,19 +86,9 @@ class _HomeState extends State<Home> {
                   right: 10,
                   child: InkWell(
                     onTap: () async {
-                      print(result!.mediaType);
-                      result.mediaType == "movie"
-                          ? await getVideo(context, result.id.toString())
-                          : await getTvVideo(context, result.id.toString());
-                      result.mediaType == "movie"
-                          ? await getCredits(context, result.id.toString())
-                          : await getTvCredits(context, result.id.toString());
-                      result.mediaType == "movie"
-                          ? await getMovieDetails(context, result.id.toString())
-                          : await getTvDetails(context, result.id.toString());
                       Navigator.push(context, MaterialPageRoute(builder: (ctx) {
                         return SearchedMovie(
-                          result: result,
+                          result: result!,
                         );
                       }));
                     },
@@ -192,8 +170,8 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.fromLTRB(8, 20, 0, 20),
                   child: Text(
                     'Popular Movies',
-                    style: getSemiBoldtStyle(
-                        color: ColorManager.whiteText, fontSize: 20),
+                    style: getMediumtStyle(
+                        color: ColorManager.whiteText, fontSize: 18),
                   ),
                 )
               ],
@@ -207,8 +185,8 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.fromLTRB(8, 20, 0, 20),
                   child: Text(
                     'Upcoming Movies',
-                    style: getSemiBoldtStyle(
-                        color: ColorManager.whiteText, fontSize: 20),
+                    style: getMediumtStyle(
+                        color: ColorManager.whiteText, fontSize: 18),
                   ),
                 )
               ],
@@ -221,8 +199,8 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.fromLTRB(8, 20, 0, 20),
                   child: Text(
                     'Popular Tv Shows',
-                    style: getSemiBoldtStyle(
-                        color: ColorManager.whiteText, fontSize: 20),
+                    style: getMediumtStyle(
+                        color: ColorManager.whiteText, fontSize: 18),
                   ),
                 )
               ],
@@ -233,8 +211,8 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.fromLTRB(8, 20, 0, 20),
                   child: Text(
                     'Upcoming Tv Shows',
-                    style: getSemiBoldtStyle(
-                        color: ColorManager.whiteText, fontSize: 20),
+                    style: getMediumtStyle(
+                        color: ColorManager.whiteText, fontSize: 18),
                   ),
                 )
               ],
@@ -245,8 +223,8 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.fromLTRB(8, 20, 0, 20),
                   child: Text(
                     'Upcoming Movies',
-                    style: getSemiBoldtStyle(
-                        color: ColorManager.whiteText, fontSize: 20),
+                    style: getMediumtStyle(
+                        color: ColorManager.whiteText, fontSize: 18),
                   ),
                 )
               ],

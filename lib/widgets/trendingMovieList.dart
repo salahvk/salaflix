@@ -36,10 +36,7 @@ class _TrendingMovieListState extends State<TrendingMovieList> {
             final newImages = "$posterApi$images";
             return InkWell(
               onTap: () {
-                // getTrending();
-
                 provider.homeindexData(index);
-                print(provider.homeIndex);
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

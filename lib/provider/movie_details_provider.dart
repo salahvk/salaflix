@@ -9,4 +9,9 @@ class MovieProvider with ChangeNotifier {
     _movieDetails = value;
     notifyListeners();
   }
+
+  void cleanDetails() {
+    _movieDetails = null;
+    notifyListeners();
+  }
 }

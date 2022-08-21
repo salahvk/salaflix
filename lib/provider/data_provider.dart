@@ -65,12 +65,26 @@ class DataProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // * Clean credits
+
+  void cleanCredits() {
+    _credit = null;
+    notifyListeners();
+  }
+
   // * Trailer Videos
   Getvideo? _video;
   Getvideo? get video => _video;
 
   set videoData(Getvideo value) {
     _video = value;
+    notifyListeners();
+  }
+
+  // * Clean video
+
+  void cleanVideo() {
+    _video = null;
     notifyListeners();
   }
 }

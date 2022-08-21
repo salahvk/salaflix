@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salafix/API/end_point.dart';
+import 'package:salafix/API/get_credits.dart';
+import 'package:salafix/API/get_video.dart';
+import 'package:salafix/API/getmovieDetails.dart';
 import 'package:salafix/components/color_manager.dart';
 import 'package:salafix/components/styles_manager.dart';
 import 'package:salafix/model/trending.dart';
@@ -8,14 +11,15 @@ import 'package:salafix/provider/data_provider.dart';
 import 'package:salafix/provider/movie_details_provider.dart';
 import 'package:salafix/screens/videoDetails.dart';
 import 'package:salafix/utils/percentage_indicator.dart';
+import 'package:salafix/widgets/topCast.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SearchedMovie extends StatefulWidget {
-  Results result;
+  final Results result;
+  String? mediaType;
 
-  SearchedMovie({
-    Key? key,
-    required this.result,
-  }) : super(key: key);
+  SearchedMovie({Key? key, required this.result, this.mediaType})
+      : super(key: key);
 
   @override
   State<SearchedMovie> createState() => _SearchedMovieState();
@@ -24,20 +28,20 @@ class SearchedMovie extends StatefulWidget {
 class _SearchedMovieState extends State<SearchedMovie> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    int? id = widget.result.id;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getInitData(widget.result, widget.mediaType);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<DataProvider>(context, listen: false);
-    final mProvider = Provider.of<MovieProvider>(context, listen: false);
+    final provider = Provider.of<DataProvider>(context, listen: true);
+    final mProvider = Provider.of<MovieProvider>(context, listen: true);
+    final size = MediaQuery.of(context).size;
     final backImage = widget.result.backdropPath;
     final posterImage = widget.result.posterPath;
-    final size = MediaQuery.of(context).size;
     final genreLength = mProvider.movieDetails?.genres?.length;
-    // print(widget.result.voteAverage);
 
     return Scaffold(
       appBar: AppBar(
@@ -188,94 +192,54 @@ class _SearchedMovieState extends State<SearchedMovie> {
                 ],
               ),
             ),
-            TopCast(provider: provider),
-            // SizedBox(
-            //   height: size.height * 0.24,
-            // )
+            provider.credit != null
+                ? TopCast(provider: provider)
+                : Container(
+                    height: 280,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 6,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 14, 8, 0),
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey[600]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: size.width * 0.3,
+                              decoration: BoxDecoration(
+                                  color: ColorManager.whiteColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: ColorManager.grayLight)),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
           ],
         ),
       ),
     );
   }
-}
 
-class TopCast extends StatelessWidget {
-  const TopCast({
-    Key? key,
-    required this.provider,
-  }) : super(key: key);
+  getInitData(Results result, String? mediaType) async {
+    final provider = Provider.of<DataProvider>(context, listen: false);
+    final mProvider = Provider.of<MovieProvider>(context, listen: false);
+    provider.cleanCredits();
+    provider.cleanVideo();
+    mProvider.cleanDetails();
 
-  final DataProvider provider;
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Container(
-      height: 280,
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemBuilder: (ctx, index) {
-          String? ActorName = provider.credit!.cast![index].name;
-          String? CharacterName = provider.credit!.cast![index].character;
-          String? images = provider.credit!.cast![index].profilePath;
-          final newImages = "$posterApi$images";
-          return InkWell(
-            onTap: () {
-              // getTrending();
-            },
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 14, 8, 0),
-              child: Container(
-                width: size.width * 0.3,
-                decoration: BoxDecoration(
-                    color: ColorManager.whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: ColorManager.grayLight)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 190,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: images != null
-                            ? Image.network(
-                                newImages,
-                                fit: BoxFit.fill,
-                              )
-                            : Image.network(
-                                noImageAvailable,
-                                fit: BoxFit.fill,
-                              ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(ActorName ?? "",
-                              maxLines: 2,
-                              style: getBoldtStyle(
-                                  color: ColorManager.background,
-                                  fontSize: 14)),
-                          Text(CharacterName ?? "",
-                              maxLines: 1,
-                              style: getMediumtStyle(
-                                  color: ColorManager.background,
-                                  fontSize: 12)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-        itemCount: provider.credit?.cast?.length,
-        scrollDirection: Axis.horizontal,
-      ),
-    );
+    result.mediaType == "movie" || mediaType == "MOVIE"
+        ? await getVideo(context, result.id.toString())
+        : await getTvVideo(context, result.id.toString());
+    result.mediaType == "movie" || mediaType == "MOVIE"
+        ? await getCredits(context, result.id.toString())
+        : await getTvCredits(context, result.id.toString());
+    result.mediaType == "movie" || mediaType == "MOVIE"
+        ? await getMovieDetails(context, result.id.toString())
+        : await getTvDetails(context, result.id.toString());
   }
 }

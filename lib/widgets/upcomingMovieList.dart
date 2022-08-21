@@ -3,8 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:salafix/API/end_point.dart';
-import 'package:salafix/API/get_credits.dart';
-import 'package:salafix/API/get_video.dart';
 
 import 'package:salafix/components/color_manager.dart';
 import 'package:salafix/provider/data_provider.dart';
@@ -30,15 +28,13 @@ class UpcomingMovieList extends StatelessWidget {
             String? images = provider.upcoming?.results![index].posterPath;
             final newImages = "$posterApi$images";
             return InkWell(
-              onTap: () async {
-                await getCredits(context, result.id.toString());
-                await getVideo(context, result.id.toString());
+              onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (ctx) {
                   return SearchedMovie(
                     result: result,
+                    mediaType: "MOVIE",
                   );
                 }));
-                // getTrending();
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

@@ -17,7 +17,6 @@ class PercentIndicator extends StatelessWidget {
       radius: 30.0,
       lineWidth: 6.0,
       percent: percentage / 10,
-      // header: new Text("Icon header"),
       center: new CircleAvatar(
         radius: 24,
         child: Text(
@@ -27,7 +26,6 @@ class PercentIndicator extends StatelessWidget {
         backgroundColor: ColorManager.darkGreen,
       ),
       backgroundColor: ColorManager.indicatorBorGreen,
-
       progressColor: ColorManager.lightGreen,
     );
   }
