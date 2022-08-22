@@ -12,6 +12,7 @@ import 'package:salafix/provider/movie_details_provider.dart';
 import 'package:salafix/screens/videoDetails.dart';
 import 'package:salafix/utils/percentage_indicator.dart';
 import 'package:salafix/utils/shimmer_top_cast.dart';
+import 'package:salafix/widgets/genre.dart';
 import 'package:salafix/widgets/topCast.dart';
 
 class SearchedMovie extends StatefulWidget {
@@ -126,51 +127,25 @@ class _SearchedMovieState extends State<SearchedMovie> {
                         ? PercentIndicator(
                             percentage: widget.result.voteAverage)
                         : Container()),
-                Positioned(
-                    left: size.width * .35,
-                    top: 10,
-                    child: genreLength != 0 && genreLength != null
-                        ? Row(
-                            children: [
-                              Text(
-                                "${mProvider.movieDetails?.genres?[0].name}",
-                                style: getRegularStyle(
-                                    color: ColorManager.whiteText),
-                              ),
-                              genreLength >= 2
-                                  ? Text(
-                                      ", ${mProvider.movieDetails?.genres?[1].name}",
-                                      style: getRegularStyle(
-                                          color: ColorManager.whiteText),
-                                    )
-                                  : Text(''),
-                              genreLength >= 3
-                                  ? Text(
-                                      ", ${mProvider.movieDetails?.genres?[2].name}",
-                                      style: getRegularStyle(
-                                          color: ColorManager.whiteText),
-                                    )
-                                  : Text(''),
-                            ],
-                          )
-                        : Container())
+                PositionedGenre(
+                    size: size, genreLength: genreLength, mProvider: mProvider)
               ],
             ),
+            // Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     child: RichText(
+            //         text: TextSpan(children: [
+            //       TextSpan(
+            //           text: "Rating ",
+            //           style: getRegularStyle(
+            //               color: ColorManager.errorRed, fontSize: 16)),
+            //       TextSpan(
+            //           text: "${widget.result.voteAverage}",
+            //           style: getRegularStyle(
+            //               color: ColorManager.blueLight, fontSize: 16))
+            //     ]))),
             Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RichText(
-                    text: TextSpan(children: [
-                  TextSpan(
-                      text: "Rating ",
-                      style: getRegularStyle(
-                          color: ColorManager.errorRed, fontSize: 16)),
-                  TextSpan(
-                      text: "${widget.result.voteAverage}",
-                      style: getRegularStyle(
-                          color: ColorManager.blueLight, fontSize: 16))
-                ]))),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 6, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
               child: Container(
                 child: Text(
                   widget.result.overview!,

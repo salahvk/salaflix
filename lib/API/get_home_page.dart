@@ -47,3 +47,42 @@ getUpcoming(BuildContext context) async {
     showSnackBar("Something Went Wrong", context);
   }
 }
+
+getTvPopular(BuildContext context) async {
+  final provider = Provider.of<DataProvider>(context, listen: false);
+  try {
+    var response = await http.get(Uri.parse(popularTvApi));
+    errorHandling(response, context);
+    var jsonResponse = jsonDecode(response.body);
+    var tvPopular = Trending.fromJson(jsonResponse);
+    provider.tvPopularData = tvPopular;
+  } on Exception catch (_) {
+    showSnackBar("Something Went Wrong", context);
+  }
+}
+
+getTopRatedTv(BuildContext context) async {
+  final provider = Provider.of<DataProvider>(context, listen: false);
+  try {
+    var response = await http.get(Uri.parse(topRatedTvApi));
+    errorHandling(response, context);
+    var jsonResponse = jsonDecode(response.body);
+    var tvTopRated = Trending.fromJson(jsonResponse);
+    provider.topRatedTvData = tvTopRated;
+  } on Exception catch (_) {
+    showSnackBar("Something Went Wrong", context);
+  }
+}
+
+getTopRatedMovie(BuildContext context) async {
+  final provider = Provider.of<DataProvider>(context, listen: false);
+  try {
+    var response = await http.get(Uri.parse(topRatedMovieApi));
+    errorHandling(response, context);
+    var jsonResponse = jsonDecode(response.body);
+    var movieTopRated = Trending.fromJson(jsonResponse);
+    provider.topRatedMovieData = movieTopRated;
+  } on Exception catch (_) {
+    showSnackBar("Something Went Wrong", context);
+  }
+}

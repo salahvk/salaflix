@@ -10,6 +10,9 @@ import 'package:salafix/provider/data_provider.dart';
 import 'package:salafix/screens/searchedMovie.dart';
 import 'package:salafix/utils/percentage_indicator.dart';
 import 'package:salafix/widgets/popularMovieList.dart';
+import 'package:salafix/widgets/popularTvList.dart';
+import 'package:salafix/widgets/top_rated_movie.dart';
+import 'package:salafix/widgets/top_rated_tv_shows.dart';
 import 'package:salafix/widgets/trendingMovieList.dart';
 import 'package:salafix/widgets/upcomingMovieList.dart';
 import 'package:shimmer/shimmer.dart';
@@ -205,30 +208,33 @@ class _HomeState extends State<Home> {
                 )
               ],
             ),
+            PopularTvList(provider: provider),
             Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 20, 0, 20),
                   child: Text(
-                    'Upcoming Tv Shows',
+                    'Top Rated Tv Shows',
                     style: getMediumtStyle(
                         color: ColorManager.whiteText, fontSize: 18),
                   ),
                 )
               ],
             ),
+            TopRatedTv(provider: provider),
             Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 20, 0, 20),
                   child: Text(
-                    'Upcoming Movies',
+                    'Top Rated Movies',
                     style: getMediumtStyle(
                         color: ColorManager.whiteText, fontSize: 18),
                   ),
                 )
               ],
             ),
+            TopRatedMovie(provider: provider)
           ],
         ),
       ),

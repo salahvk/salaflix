@@ -36,6 +36,9 @@ class _SplashState extends State<Splash> {
     await getTrending(context);
     await getPopular(context);
     await getUpcoming(context);
+    await getTvPopular(context);
+    await getTopRatedMovie(context);
+    await getTopRatedTv(context);
     // Timer(Duration(seconds: 3), () {
     Navigator.pushReplacementNamed(context, Routes.homePage);
     // });

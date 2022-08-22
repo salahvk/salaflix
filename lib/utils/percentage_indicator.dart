@@ -19,9 +19,19 @@ class PercentIndicator extends StatelessWidget {
       percent: percentage / 10,
       center: new CircleAvatar(
         radius: 24,
-        child: Text(
-          "${multipliedPercentage.toString().substring(0, 2)}%",
-          style: getBoldtStyle(color: ColorManager.whiteText, fontSize: 15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "${multipliedPercentage.toString().substring(0, 2)}%",
+              style: getBoldtStyle(color: ColorManager.whiteText, fontSize: 15),
+            ),
+            Text(
+              "Rating",
+              style:
+                  getRegularStyle(color: ColorManager.whiteText, fontSize: 6),
+            ),
+          ],
         ),
         backgroundColor: ColorManager.darkGreen,
       ),

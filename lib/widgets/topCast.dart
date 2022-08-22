@@ -3,6 +3,7 @@ import 'package:salafix/API/end_point.dart';
 import 'package:salafix/components/color_manager.dart';
 import 'package:salafix/components/styles_manager.dart';
 import 'package:salafix/provider/data_provider.dart';
+import 'package:salafix/widgets/person_details.dart';
 
 class TopCast extends StatelessWidget {
   const TopCast({
@@ -20,12 +21,15 @@ class TopCast extends StatelessWidget {
       child: ListView.builder(
         shrinkWrap: true,
         itemBuilder: (ctx, index) {
-          String? ActorName = provider.credit!.cast![index].name;
-          String? CharacterName = provider.credit!.cast![index].character;
-          String? images = provider.credit!.cast![index].profilePath;
-          final newImages = "$posterApi$images";
+          final Person = provider.credit!.cast![index];
+          final newImages = "$posterApi${Person.profilePath}";
           return InkWell(
-            onTap: () {},
+            onTap: () {
+              print(Person.id);
+              Navigator.push(context, MaterialPageRoute(builder: (ctx) {
+                return PersonalDetails(id: Person.id.toString());
+              }));
+            },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(8, 14, 8, 0),
               child: Container(
@@ -41,7 +45,7 @@ class TopCast extends StatelessWidget {
                       height: 190,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: images != null
+                        child: Person.profilePath != null
                             ? Image.network(
                                 newImages,
                                 fit: BoxFit.fill,
@@ -57,12 +61,12 @@ class TopCast extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(ActorName ?? "",
+                          Text(Person.name ?? "",
                               maxLines: 2,
                               style: getBoldtStyle(
                                   color: ColorManager.background,
                                   fontSize: 14)),
-                          Text(CharacterName ?? "",
+                          Text(Person.character ?? "",
                               maxLines: 1,
                               style: getMediumtStyle(
                                   color: ColorManager.background,

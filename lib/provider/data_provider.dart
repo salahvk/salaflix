@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:salafix/model/credits.dart';
 import 'package:salafix/model/getVideo.dart';
+import 'package:salafix/model/person_model.dart';
 import 'package:salafix/model/trending.dart';
 
 class DataProvider with ChangeNotifier {
@@ -26,6 +27,33 @@ class DataProvider with ChangeNotifier {
 
   set popularData(Trending value) {
     _popular = value;
+    notifyListeners();
+  }
+
+// * Popular Tv
+  Trending? _tvPopular;
+  Trending? get tvPopular => _tvPopular;
+
+  set tvPopularData(Trending value) {
+    _tvPopular = value;
+    notifyListeners();
+  }
+
+// * Top Rated Movie
+  Trending? _topRatedMovie;
+  Trending? get topRatedMovie => _topRatedMovie;
+
+  set topRatedMovieData(Trending value) {
+    _topRatedMovie = value;
+    notifyListeners();
+  }
+
+// * Top Rated Tv Shows
+  Trending? _topRatedTv;
+  Trending? get topRatedTv => _topRatedTv;
+
+  set topRatedTvData(Trending value) {
+    _topRatedTv = value;
     notifyListeners();
   }
 
@@ -85,6 +113,16 @@ class DataProvider with ChangeNotifier {
 
   void cleanVideo() {
     _video = null;
+    notifyListeners();
+  }
+
+  // * Personal Data
+
+  PersonModel? _personModel;
+  PersonModel? get personalModel => _personModel;
+
+  set PersonalData(PersonModel value) {
+    _personModel = value;
     notifyListeners();
   }
 }
