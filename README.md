@@ -2,7 +2,7 @@
 
 It's the small TMDB app where you can know everything about movies and Tv series. You can also watch trailers of these contents.
 
-![home](https://user-images.githubusercontent.com/88548221/185944314-2939c546-f903-4c2d-8351-08660b9a732e.jpg)
+https://im5.ezgif.com/tmp/ezgif-5-dbb50df41c.gif
 
 
 # This project is a starting point for a Flutter application.
