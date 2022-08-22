@@ -1,6 +1,6 @@
 # salaflix 
 
-A new Flutter project.
+It's the small TMDB app where you can know everything about movies and Tv series. You can also watch trailers of these contents.
 
 ## Getting Started
 
