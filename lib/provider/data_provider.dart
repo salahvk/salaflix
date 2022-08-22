@@ -125,4 +125,11 @@ class DataProvider with ChangeNotifier {
     _personModel = value;
     notifyListeners();
   }
+
+  // *Clear Personal Data
+
+  void clearPersonalData() {
+    _personModel = null;
+    notifyListeners();
+  }
 }
