@@ -1,5 +1,5 @@
 # salaflix 
-
+AIzaSyAffQzsPUF2IvugMtlj-OiNL5kJ9SYOP04
 It's the small TMDB app where you can know everything about movies and Tv series. You can also watch trailers of these contents.
 
 
